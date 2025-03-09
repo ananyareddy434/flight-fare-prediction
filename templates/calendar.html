@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Price Calendar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d788a;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .calendar-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .calendar-day {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .calendar-day:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .calendar-day.selected {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .calendar-day.lowest {
+            background-color: #cce5ff;
+            border-color: #b8daff;
+        }
+        .price {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+        .date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .return-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .return-link a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .return-link a:hover {
+            background-color: #0056b3;
+        }
+        .legend {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 0 10px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+        .selected-color {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .lowest-color {
+            background-color: #cce5ff;
+            border: 1px solid #b8daff;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h1>Flight Price Calendar</h1>
+            <p>Prices for {{ route_info }} from {{ date_range_start }} to {{ date_range_end }}</p>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color selected-color"></div>
+                <span>Selected Date</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color lowest-color"></div>
+                <span>Lowest Price</span>
+            </div>
+        </div>
+
+        <div class="calendar-grid">
+            {% for date_price in date_prices %}
+            <div class="calendar-day {% if date_price.day_offset == 0 %}selected{% endif %} {% if date_price.price == lowest_price.price %}lowest{% endif %}">
+                <div class="date">{{ date_price.date }}</div>
+                <div class="price">Rs. {{ date_price.price }}</div>
+                {% if date_price.day_offset == 0 %}
+                <div class="badge">Selected</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="return-link">
+            <a href="/">Back to Search</a>
+        </div>
+    </div>
+</body>
+</html>
