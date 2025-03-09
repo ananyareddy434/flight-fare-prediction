@@ -1,5 +1,6 @@
 flask
 flask_cors
+gunicorn
 annotated-types==0.7.0
 anyio==4.8.0
 asttokens==3.0.0
